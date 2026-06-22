@@ -23,7 +23,7 @@ public class MoveCamera : MonoBehaviour {
     void Update() {
         PlayerMovement pm = PlayerMovement.Instance;
 
-        // Landing effect
+        // Landing effect umm it's subtle but cool by nishi-san 2026... nichirindev
         if (pm != null && !wasGrounded && pm.grounded) {
             float fallSpeed = Mathf.Abs(pm.GetFallSpeed());
             float t = Mathf.InverseLerp(0.1f, 15f, fallSpeed);
@@ -34,7 +34,7 @@ public class MoveCamera : MonoBehaviour {
 
         landingOffset = Mathf.SmoothDamp(landingOffset, 0f, ref landingVel, 1f / landingRecoverSpeed);
 
-        // Head bob
+        // Head bob is way to go
         Vector3 bobTarget = Vector3.zero;
         if (pm != null && pm.grounded) {
             Vector3 vel = pm.GetVelocity();

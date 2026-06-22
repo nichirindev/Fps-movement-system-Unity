@@ -5,14 +5,14 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {   
     [Header("Assignables")]
-    //Assignables
 	public Transform playerCam;
 	public Transform orientation;
 	private Collider playerCollider;
 	public Rigidbody rb;
 
-    [Space(10)]
+    [Space(10)] // very cool spacing by nishi-san 2026... nichirindev
 
+	[Header("Ground & dirt stuff")]
 	public LayerMask whatIsGround;
 	public LayerMask whatIsWallrunnable;
 
@@ -25,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
 	public bool grounded;
 	public bool onWall;
 
-    //Private Floats
     private float wallRunGravity = 1f;
 	private float maxSlopeAngle = 35f;
 	private float wallRunRotation;
@@ -41,7 +40,6 @@ public class PlayerMovement : MonoBehaviour
 	private float y;
 	private float vel;
 
-    //Private bools
 	private bool readyToJump;
 	private bool jumping;
 	private bool sprinting;
@@ -56,17 +54,14 @@ public class PlayerMovement : MonoBehaviour
 	private bool cancellingWall;
 	private bool cancellingSurf;
 
-    //Private Vector3's
 	private Vector3 grapplePoint;
 	private Vector3 normalVector;
 	private Vector3 wallNormalVector;
 	private Vector3 wallRunPos;
 	private Vector3 previousLookdir;
 
-    //Private int
 	private int nw;
     
-    //Instance
 	public static PlayerMovement Instance { get; private set; }
 
 	private void Awake()
@@ -86,21 +81,17 @@ public class PlayerMovement : MonoBehaviour
 
 	private void LateUpdate()
 	{
-        //For wallrunning
-	    WallRunning();
+	    WallRunning(); //use 90 degree wall to run on them ~ nishi-san 2026.... nichirindev
 	}
 
 	private void FixedUpdate()
 	{
-        //For moving
 		Movement();
 	}
 
 	private void Update()
 	{
-        //Input
 		MyInput();
-        //Looking around
 		Look();
 	}
 
@@ -121,7 +112,6 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-    //Scale player down
 	private void StartCrouch()
 	{
 		float num = 400f;
@@ -133,14 +123,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-    //Scale player to original size
 	private void StopCrouch()
 	{
 		base.transform.localScale = new Vector3(1f, 1.5f, 1f);
 		base.transform.position = new Vector3(base.transform.position.x, base.transform.position.y + 0.5f, base.transform.position.z);
 	}
 
-    //Moving around with WASD
 	private void Movement()
 	{
 		rb.AddForce(Vector3.down * Time.deltaTime * 10f);
@@ -203,13 +191,13 @@ public class PlayerMovement : MonoBehaviour
 		rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * num4);
 	}
 
-    //Ready to jump again
+    //Reset the jump so the player can jump again
 	private void ResetJump()
 	{
 		readyToJump = true;
 	}
 
-    //Player go fly
+    //The uppies we need
 	private void Jump()
 	{
         if ((grounded || wallRunning || surfing) && readyToJump)
@@ -239,7 +227,7 @@ public class PlayerMovement : MonoBehaviour
         }
 	}
 
-    //Looking around by using your mouse
+    //Self Explanatory --- Look around with the mouse
 	private void Look()
 	{
 		float num = Input.GetAxis("Mouse X") * sensitivity * Time.fixedDeltaTime * sensMultiplier;
@@ -253,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
 		orientation.transform.localRotation = Quaternion.Euler(0f, desiredX, 0f);
 	}
 
-    //Make the player movement feel good 
+    //Counter movement to prevent sliding and stuff --- This is a bit complex but it works so yeah
 	private void CounterMovement(float x, float y, Vector2 mag)
 	{
 		if (!grounded || jumping)
